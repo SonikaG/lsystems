@@ -1,5 +1,5 @@
 # GraphicsProject5
-- Nelson Wapon Safo
+- Nelson Wapon Safo, Sonika Garg and Taylor Kline
 
 - Completed all features
 
