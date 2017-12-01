@@ -7,6 +7,8 @@
 #include "config.h"
 #include "gui.h"
 
+#include "string_axioms.h"
+
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -124,21 +126,25 @@ int main(int argc, char* argv[])
 	// FIXME: add code to create bone and cylinder geometry
 	// std::vector<glm::
 
-	Mesh mesh;
-	mesh.loadpmd(argv[1]);
-	std::cout << "Loaded object  with  " << mesh.vertices.size()
-		<< " vertices and " << mesh.faces.size() << " faces.\n";
+	// Mesh mesh;
+	// mesh.loadpmd(argv[1]);
+	// std::cout << "Loaded object  with  " << mesh.vertices.size()
+	// 	<< " vertices and " << mesh.faces.size() << " faces.\n";
 
-	glm::vec4 mesh_center = glm::vec4(0.0f);
-	for (size_t i = 0; i < mesh.vertices.size(); ++i) {
-		mesh_center += mesh.vertices[i];
-	}
-	mesh_center /= mesh.vertices.size();
+	// glm::vec4 mesh_center = glm::vec4(0.0f);
+	// for (size_t i = 0; i < mesh.vertices.size(); ++i) {
+	// 	mesh_center += mesh.vertices[i];
+	// }
+	// mesh_center /= mesh.vertices.size();
+
+	Rules rule;
+	String_Axioms string_axioms("0", rule);
+	std::cout << "Nelson\n";
 
 	/*
 	 * GUI object needs the mesh object for bone manipulation.
 	 */
-	gui.assignMesh(&mesh);
+	//gui.assignMesh(&mesh);
 
 	glm::vec4 light_position = glm::vec4(0.0f, 100.0f, 0.0f, 1.0f);
 	MatrixPointers mats; // Define MatrixPoFinters here for lambda to capture
@@ -152,10 +158,10 @@ int main(int argc, char* argv[])
 	auto matrix_binder = [](int loc, const void* data) {
 		glUniformMatrix4fv(loc, 1, GL_FALSE, (const GLfloat*)data);
 	};
-	auto bone_matrix_binder = [&mesh](int loc, const void* data) {
-		auto nelem = mesh.getNumberOfBones();
-		glUniformMatrix4fv(loc, nelem, GL_FALSE, (const GLfloat*)data);
-	};
+	// auto bone_matrix_binder = [&mesh](int loc, const void* data) {
+	// 	auto nelem = mesh.getNumberOfBones();
+	// 	glUniformMatrix4fv(loc, nelem, GL_FALSE, (const GLfloat*)data);
+	// };
 	auto vector_binder = [](int loc, const void* data) {
 		glUniform4fv(loc, 1, (const GLfloat*)data);
 	};
@@ -199,20 +205,20 @@ int main(int argc, char* argv[])
 			return &non_transparet;
 	};
 
-	glm::mat4* deformed = mesh.Ds.data();
-	glm::mat4* undeformed = mesh.Us.data();
+	// glm::mat4* deformed = mesh.Ds.data();
+	// glm::mat4* undeformed = mesh.Us.data();
 
-	auto undeformed_matrices_data = [undeformed]() -> const void* {
-		return &undeformed[0][0];
-	};
-	auto deformed_matrices_data = [deformed]() -> const void* {
-		return &deformed[0][0];
-	};
+	// auto undeformed_matrices_data = [undeformed]() -> const void* {
+	// 	return &undeformed[0][0];
+	// };
+	// auto deformed_matrices_data = [deformed]() -> const void* {
+	// 	return &deformed[0][0];
+	// };
 
-	int bone_size = mesh.getNumberOfBones();
-	auto bone_count_data = [bone_size]() -> const void* {
-		return &bone_size;
-	};
+	// int bone_size = mesh.getNumberOfBones();
+	// auto bone_count_data = [bone_size]() -> const void* {
+	// 	return &bone_size;
+	// };
 
 	// FIXME: add more lambdas for data_source if you want to use RenderPass.
 	//        Otherwise, do whatever you like here
@@ -225,11 +231,11 @@ int main(int argc, char* argv[])
 	ShaderUniform object_alpha = { "alpha", float_binder, alpha_data };
 	// FIXME: define more ShaderUniforms for RenderPass if you want to use it.
 	//        Otherwise, do whatever you like here
-	ShaderUniform undeformed_matrices = { "Us", bone_matrix_binder, undeformed_matrices_data};
-	ShaderUniform deformed_matrices = { "Ds", bone_matrix_binder, deformed_matrices_data};
-	ShaderUniform bone_count_uni = { "bone_count", int_binder, bone_count_data};
+	// ShaderUniform undeformed_matrices = { "Us", bone_matrix_binder, undeformed_matrices_data};
+	// ShaderUniform deformed_matrices = { "Ds", bone_matrix_binder, deformed_matrices_data};
+	// ShaderUniform bone_count_uni = { "bone_count", int_binder, bone_count_data};
 
-	std::vector<glm::vec2>& uv_coordinates = mesh.uv_coordinates;
+	//std::vector<glm::vec2>& uv_coordinates = mesh.uv_coordinates;
 	// RenderDataInput object_pass_input;
 	// object_pass_input.assign(0, "vertex_position", nullptr, mesh.vertices.size(), 4, GL_FLOAT);
 	// object_pass_input.assign(1, "normal", mesh.vertex_normals.data(), mesh.vertex_normals.size(), 4, GL_FLOAT);
@@ -249,77 +255,77 @@ int main(int argc, char* argv[])
 	// 		{ "fragment_color" }
 	// 		);
 
-	RenderDataInput object_pass_input;
-	object_pass_input.assign(0, "vertex_position", nullptr, mesh.vertices.size(), 4, GL_FLOAT);
-	object_pass_input.assign(1, "normal", mesh.vertex_normals.data(), mesh.vertex_normals.size(), 4, GL_FLOAT);
-	object_pass_input.assign(2, "uv", uv_coordinates.data(), uv_coordinates.size(), 2, GL_FLOAT);
-	// std::cout << "mesh weights array size: " << mesh.weights_array.size() << "\n";
-	// std::cout << "bone count: " << mesh.getNumberOfBones() << "\n";
-	// std::cout << "division: " << (mesh.weights_array.size()/mesh.getNumberOfBones()) << "\n";
-	// std::cout << "assign length: " << mesh.vertices.size() << "\n";
+	// RenderDataInput object_pass_input;
+	// object_pass_input.assign(0, "vertex_position", nullptr, mesh.vertices.size(), 4, GL_FLOAT);
+	// object_pass_input.assign(1, "normal", mesh.vertex_normals.data(), mesh.vertex_normals.size(), 4, GL_FLOAT);
+	// object_pass_input.assign(2, "uv", uv_coordinates.data(), uv_coordinates.size(), 2, GL_FLOAT);
+	// // std::cout << "mesh weights array size: " << mesh.weights_array.size() << "\n";
+	// // std::cout << "bone count: " << mesh.getNumberOfBones() << "\n";
+	// // std::cout << "division: " << (mesh.weights_array.size()/mesh.getNumberOfBones()) << "\n";
+	// // std::cout << "assign length: " << mesh.vertices.size() << "\n";
 	
-	object_pass_input.assign(3, "weights1", mesh.weights_array.data(), mesh.weights_array.size()/4, 4, GL_FLOAT);
-	object_pass_input.assign(4, "weights2", mesh.weights_array.data(), mesh.weights_array.size()/4, 4, GL_FLOAT);
-	object_pass_input.assign(5, "weights3", mesh.weights_array.data(), mesh.weights_array.size()/4, 4, GL_FLOAT);
+	// object_pass_input.assign(3, "weights1", mesh.weights_array.data(), mesh.weights_array.size()/4, 4, GL_FLOAT);
+	// object_pass_input.assign(4, "weights2", mesh.weights_array.data(), mesh.weights_array.size()/4, 4, GL_FLOAT);
+	// object_pass_input.assign(5, "weights3", mesh.weights_array.data(), mesh.weights_array.size()/4, 4, GL_FLOAT);
 
-	object_pass_input.assign(6, "bone_ids1", mesh.bone_ids.data(), mesh.bone_ids.size()/4, 4, GL_INT);
-	object_pass_input.assign(7, "bone_ids2", mesh.bone_ids.data(), mesh.bone_ids.size()/4, 4, GL_INT);
-	object_pass_input.assign(8, "bone_ids3", mesh.bone_ids.data(), mesh.bone_ids.size()/4, 4, GL_INT);
+	// object_pass_input.assign(6, "bone_ids1", mesh.bone_ids.data(), mesh.bone_ids.size()/4, 4, GL_INT);
+	// object_pass_input.assign(7, "bone_ids2", mesh.bone_ids.data(), mesh.bone_ids.size()/4, 4, GL_INT);
+	// object_pass_input.assign(8, "bone_ids3", mesh.bone_ids.data(), mesh.bone_ids.size()/4, 4, GL_INT);
 
-	object_pass_input.assign_index(mesh.faces.data(), mesh.faces.size(), 3);
-	object_pass_input.useMaterials(mesh.materials);
-	RenderPass object_pass(-1,
-			object_pass_input,
-			{
-			  animated_vertex_shader,
-			  geometry_shader,
-			  fragment_shader
-			},
-			{ std_model, std_view, std_proj,
-			  std_light,
-			  std_camera, object_alpha,
-			  undeformed_matrices, deformed_matrices, bone_count_uni},
-			{ "fragment_color" },
-			true
-			);
+	// object_pass_input.assign_index(mesh.faces.data(), mesh.faces.size(), 3);
+	// object_pass_input.useMaterials(mesh.materials);
+	// RenderPass object_pass(-1,
+	// 		object_pass_input,
+	// 		{
+	// 		  animated_vertex_shader,
+	// 		  geometry_shader,
+	// 		  fragment_shader
+	// 		},
+	// 		{ std_model, std_view, std_proj,
+	// 		  std_light,
+	// 		  std_camera, object_alpha,
+	// 		  undeformed_matrices, deformed_matrices, bone_count_uni},
+	// 		{ "fragment_color" },
+	// 		true
+	// 		);
 
 	// FIXME: Create the RenderPass objects for bones here.
 	//        Otherwise do whatever you like.
-	RenderDataInput bone_pass_input;
-	bone_pass_input.assign(0, "vertex_position", mesh.skeleton.getVertices().data(), mesh.skeleton.getVertices().size(), 4, GL_FLOAT);
-	RenderPass bone_pass(-1,
-			bone_pass_input,
-			{ bone_vertex_shader, bone_geometry_shader, bone_fragment_shader},
-			{ std_model, std_view, std_proj, std_light },
-			{ "fragment_color" }
-			);
+	// RenderDataInput bone_pass_input;
+	// bone_pass_input.assign(0, "vertex_position", mesh.skeleton.getVertices().data(), mesh.skeleton.getVertices().size(), 4, GL_FLOAT);
+	// RenderPass bone_pass(-1,
+	// 		bone_pass_input,
+	// 		{ bone_vertex_shader, bone_geometry_shader, bone_fragment_shader},
+	// 		{ std_model, std_view, std_proj, std_light },
+	// 		{ "fragment_color" }
+	// 		);
 
 	RenderDataInput cylinder_pass_input;
-	cylinder_pass_input.assign(0, "vertex_position", mesh.skeleton.getCylinderVertices().data(), mesh.skeleton.getCylinderVertices().size(), 4, GL_FLOAT);
+	cylinder_pass_input.assign(0, "vertex_position", string_axioms.tree_vertices.data(), string_axioms.tree_vertices.size(), 4, GL_FLOAT);
 	RenderPass cylinder_pass(-1,
 			cylinder_pass_input,
-			{ bone_vertex_shader, bone_geometry_shader, cylinder_fragment_shader},
-			{ std_model, std_view, std_proj, std_light },
-			{ "fragment_color" }
-			);
+	 		{ bone_vertex_shader, bone_geometry_shader, cylinder_fragment_shader},
+	 		{ std_model, std_view, std_proj, std_light },
+	 		{ "fragment_color" }
+	 		);
 
-	RenderDataInput normal_pass_input;
-	normal_pass_input.assign(0, "vertex_position", mesh.skeleton.getNormalVertices().data(), mesh.skeleton.getNormalVertices().size(), 4, GL_FLOAT);
-	RenderPass normal_pass(-1,
-			normal_pass_input,
-			{ bone_vertex_shader, bone_geometry_shader, normal_fragment_shader},
-			{ std_model, std_view, std_proj, std_light },
-			{ "fragment_color" }
-			);
+	// RenderDataInput normal_pass_input;
+	// normal_pass_input.assign(0, "vertex_position", mesh.skeleton.getNormalVertices().data(), mesh.skeleton.getNormalVertices().size(), 4, GL_FLOAT);
+	// RenderPass normal_pass(-1,
+	// 		normal_pass_input,
+	// 		{ bone_vertex_shader, bone_geometry_shader, normal_fragment_shader},
+	// 		{ std_model, std_view, std_proj, std_light },
+	// 		{ "fragment_color" }
+	// 		);
 
-	RenderDataInput binormal_pass_input;
-	binormal_pass_input.assign(0, "vertex_position", mesh.skeleton.getBinormalVertices().data(), mesh.skeleton.getBinormalVertices().size(), 4, GL_FLOAT);
-	RenderPass binormal_pass(-1,
-			binormal_pass_input,
-			{ bone_vertex_shader, bone_geometry_shader, binormal_fragment_shader},
-			{ std_model, std_view, std_proj, std_light },
-			{ "fragment_color" }
-			);
+	// RenderDataInput binormal_pass_input;
+	// binormal_pass_input.assign(0, "vertex_position", mesh.skeleton.getBinormalVertices().data(), mesh.skeleton.getBinormalVertices().size(), 4, GL_FLOAT);
+	// RenderPass binormal_pass(-1,
+	// 		binormal_pass_input,
+	// 		{ bone_vertex_shader, bone_geometry_shader, binormal_fragment_shader},
+	// 		{ std_model, std_view, std_proj, std_light },
+	// 		{ "fragment_color" }
+	// 		);
 
 	RenderDataInput floor_pass_input;
 	floor_pass_input.assign(0, "vertex_position", floor_vertices.data(), floor_vertices.size(), 4, GL_FLOAT);
@@ -331,7 +337,7 @@ int main(int argc, char* argv[])
 			{ "fragment_color" }
 			);
 	float aspect = 0.0f;
-	std::cout << "center = " << mesh.getCenter() << "\n";
+	//std::cout << "center = " << mesh.getCenter() << "\n";
 
 	bool draw_floor = true;
 	bool draw_skeleton = true;
@@ -363,48 +369,48 @@ int main(int argc, char* argv[])
 		draw_cylinder = true;
 #endif
 		// FIXME: Draw bones first.
-		if(draw_skeleton && mesh.show)
+		// if(draw_skeleton && mesh.show)
+		// {
+		// 	//if(mesh.isDirty)
+		// 	//{
+		// 		bone_pass.updateVBO(0,
+		// 					  mesh.skeleton.getVertices().data(),
+		// 					  mesh.skeleton.getVertices().size());
+		// 		mesh.isDirty = false;
+		// 	//}
+		// 	bone_pass.setup();
+		// 	// Draw our lines
+		// 	CHECK_GL_ERROR(glDrawArrays(GL_LINES, 0, mesh.skeleton.getVertices().size() * 2));
+
+		// 	//mouse_pass.setup();
+
+		// 	//CHECK_GL_ERROR(glDrawArrays(GL_LINES, 0, mouse_vertices.size() * 2));
+		// }
+
+		if(draw_cylinder)
 		{
-			//if(mesh.isDirty)
-			//{
-				bone_pass.updateVBO(0,
-							  mesh.skeleton.getVertices().data(),
-							  mesh.skeleton.getVertices().size());
-				mesh.isDirty = false;
-			//}
-			bone_pass.setup();
-			// Draw our lines
-			CHECK_GL_ERROR(glDrawArrays(GL_LINES, 0, mesh.skeleton.getVertices().size() * 2));
+		 	cylinder_pass.updateVBO(0,
+		 					  string_axioms.tree_vertices.data(),
+		 					  string_axioms.tree_vertices.size());
+		 	cylinder_pass.setup();
 
-			//mouse_pass.setup();
+		 	CHECK_GL_ERROR(glDrawArrays(GL_LINES, 0, string_axioms.tree_vertices.size() * 2));
 
-			//CHECK_GL_ERROR(glDrawArrays(GL_LINES, 0, mouse_vertices.size() * 2));
-		}
+		// 	normal_pass.updateVBO(0,
+		// 					  mesh.skeleton.getNormalVertices().data(),
+		// 					  mesh.skeleton.getNormalVertices().size());	
 
-		if(draw_cylinder && mesh.show)
-		{
-			cylinder_pass.updateVBO(0,
-							  mesh.skeleton.getCylinderVertices().data(),
-							  mesh.skeleton.getCylinderVertices().size());
-			cylinder_pass.setup();
+		// 	normal_pass.setup();
 
-			CHECK_GL_ERROR(glDrawArrays(GL_LINES, 0, mesh.skeleton.getCylinderVertices().size() * 2));
+		// 	CHECK_GL_ERROR(glDrawArrays(GL_LINES, 0, mesh.skeleton.getBinormalVertices().size() * 2));	
 
-			normal_pass.updateVBO(0,
-							  mesh.skeleton.getNormalVertices().data(),
-							  mesh.skeleton.getNormalVertices().size());	
+		// 	binormal_pass.updateVBO(0,
+		// 					  mesh.skeleton.getBinormalVertices().data(),
+		// 					  mesh.skeleton.getBinormalVertices().size());	
 
-			normal_pass.setup();
+		// 	binormal_pass.setup();
 
-			CHECK_GL_ERROR(glDrawArrays(GL_LINES, 0, mesh.skeleton.getBinormalVertices().size() * 2));	
-
-			binormal_pass.updateVBO(0,
-							  mesh.skeleton.getBinormalVertices().data(),
-							  mesh.skeleton.getBinormalVertices().size());	
-
-			binormal_pass.setup();
-
-			CHECK_GL_ERROR(glDrawArrays(GL_LINES, 0, mesh.skeleton.getBinormalVertices().size() * 2));	
+		// 	CHECK_GL_ERROR(glDrawArrays(GL_LINES, 0, mesh.skeleton.getBinormalVertices().size() * 2));	
 				
 		}
 
@@ -414,30 +420,30 @@ int main(int argc, char* argv[])
 			// Draw our triangles.
 			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, floor_faces.size() * 3, GL_UNSIGNED_INT, 0));
 		}
-		if (draw_object) {
-			if (gui.isPoseDirty()) {
-				mesh.updateAnimation();
-				object_pass.updateVBO(0,
-						      mesh.animated_vertices.data(),
-						      mesh.animated_vertices.size());
-#if 0
-				// For debugging if you need it.
-				for (int i = 0; i < 4; i++) {
-					std::cerr << " Vertex " << i << " from " << mesh.vertices[i] << " to " << mesh.animated_vertices[i] << std::endl;
-				}
-#endif
-				gui.clearPose();
-			}
-			object_pass.setup();
-			int mid = 0;
-			while (object_pass.renderWithMaterial(mid))
-				mid++;
-#if 0	
-			// For debugging also
-			if (mid == 0) // Fallback
-				CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, mesh.faces.size() * 3, GL_UNSIGNED_INT, 0));
-#endif
-		}
+// 		if (draw_object) {
+// 			if (gui.isPoseDirty()) {
+// 				mesh.updateAnimation();
+// 				object_pass.updateVBO(0,
+// 						      mesh.animated_vertices.data(),
+// 						      mesh.animated_vertices.size());
+// #if 0
+// 				// For debugging if you need it.
+// 				for (int i = 0; i < 4; i++) {
+// 					std::cerr << " Vertex " << i << " from " << mesh.vertices[i] << " to " << mesh.animated_vertices[i] << std::endl;
+// 				}
+// #endif
+// 				gui.clearPose();
+// 			}
+// 			object_pass.setup();
+// 			int mid = 0;
+// 			while (object_pass.renderWithMaterial(mid))
+// 				mid++;
+// #if 0	
+// 			// For debugging also
+// 			if (mid == 0) // Fallback
+// 				CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, mesh.faces.size() * 3, GL_UNSIGNED_INT, 0));
+// #endif
+// 		}
 		// Poll and swap.
 		glfwPollEvents();
 		glfwSwapBuffers(window);

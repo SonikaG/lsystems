@@ -71,15 +71,15 @@ void GUI::keyCallback(int key, int scancode, int action, int mods)
 		else
 			roll_speed = roll_speed_;
 		// FIXME: actually roll the bone here
-		if(current_bone_ != NULL)
-		{
-			current_bone_->rollBone(roll_speed);
-			mesh_->skeleton.generateVertices();
-			mesh_->skeleton.regenerateHighlightBone(current_bone_);
-			mesh_->skeleton.regenerateNormalVertices(current_bone_);
-			mesh_->skeleton.regenerateBinormalVertices(current_bone_);
-			pose_changed_ = true;
-		}
+		// if(current_bone_ != NULL)
+		// {
+		// 	current_bone_->rollBone(roll_speed);
+		// 	mesh_->skeleton.generateVertices();
+		// 	mesh_->skeleton.regenerateHighlightBone(current_bone_);
+		// 	mesh_->skeleton.regenerateNormalVertices(current_bone_);
+		// 	mesh_->skeleton.regenerateBinormalVertices(current_bone_);
+		// 	pose_changed_ = true;
+		// }
 	} else if (key == GLFW_KEY_C && action != GLFW_RELEASE) {
 		fps_mode_ = !fps_mode_;
 	} else if (key == GLFW_KEY_LEFT_BRACKET && action == GLFW_RELEASE) {
@@ -92,7 +92,7 @@ void GUI::keyCallback(int key, int scancode, int action, int mods)
 		//current_bone_ %= mesh_->getNumberOfBones();
 	} else if (key == GLFW_KEY_T && action != GLFW_RELEASE) {
 		transparent_ = !transparent_;
-		mesh_->show = !mesh_->show;
+		// mesh_->show = !mesh_->show;
 	}
 }
 
@@ -133,25 +133,25 @@ void GUI::mousePosCallback(double mouse_x, double mouse_y)
 		look_ = glm::column(orientation_, 2);
 	} else if (drag_bone && current_bone_ != NULL) {
 		// FIXME: Handle bone rotation
-		if(std::abs(mouse_delta.x) <= 0.1f && std::abs(mouse_delta.y) <= 0.1f)
-			return;
+		// if(std::abs(mouse_delta.x) <= 0.1f && std::abs(mouse_delta.y) <= 0.1f)
+		// 	return;
 
-		glm::vec3 zAxis = glm::normalize(center_ - eye_);
-		glm::vec3 xAxis = glm::normalize(glm::cross(zAxis, up_));
-		glm::vec3 yAxis = -glm::normalize(glm::cross(xAxis, zAxis));
+		// glm::vec3 zAxis = glm::normalize(center_ - eye_);
+		// glm::vec3 xAxis = glm::normalize(glm::cross(zAxis, up_));
+		// glm::vec3 yAxis = -glm::normalize(glm::cross(xAxis, zAxis));
 
-		float angle_magnitude = rotation_speed_ * glm::length(mouse_delta);
+		// float angle_magnitude = rotation_speed_ * glm::length(mouse_delta);
 
-		glm::vec3 mouse_vector = glm::normalize(xAxis*mouse_delta.x + yAxis*mouse_delta.y);
+		// glm::vec3 mouse_vector = glm::normalize(xAxis*mouse_delta.x + yAxis*mouse_delta.y);
 
-		glm::vec3 rotation_axis = glm::normalize(glm::cross(mouse_vector, zAxis));
+		// glm::vec3 rotation_axis = glm::normalize(glm::cross(mouse_vector, zAxis));
 
-		current_bone_->rotateBone(rotation_axis, angle_magnitude);
+		// current_bone_->rotateBone(rotation_axis, angle_magnitude);
 
-		mesh_->skeleton.generateVertices();
-		mesh_->skeleton.regenerateHighlightBone(current_bone_);
-		mesh_->skeleton.regenerateNormalVertices(current_bone_);
-		mesh_->skeleton.regenerateBinormalVertices(current_bone_);
+		// mesh_->skeleton.generateVertices();
+		// mesh_->skeleton.regenerateHighlightBone(current_bone_);
+		// mesh_->skeleton.regenerateNormalVertices(current_bone_);
+		// mesh_->skeleton.regenerateBinormalVertices(current_bone_);
 		pose_changed_ = true;
 		return ;
 	}
@@ -159,9 +159,9 @@ void GUI::mousePosCallback(double mouse_x, double mouse_y)
 	// FIXME: highlight bones that have been moused over
 	if(!drag_bone)
 	{
-		Bone* highlight_bone = NULL;
-		highlightBones(mouse_ray, highlight_bone);
-		current_bone_ = highlight_bone;
+		// Bone* highlight_bone = NULL;
+		// highlightBones(mouse_ray, highlight_bone);
+		// current_bone_ = highlight_bone;
 		//if(current_bone_)
 		//	std::cout << "current bone id: " << current_bone_->getJid() << "\n";
 	}
