@@ -14,12 +14,33 @@ void print_vec2(glm::vec4 vec, char* name)
 	std::cout << name << ": " << vec.x << " " << vec.y << " " << vec.z << "\n";
 }
 
+float deg_to_rad(float angle_in_degrees) {
+	return (angle_in_degrees * M_PI) / 180.0f;
+}
+
 void print_matrix2(glm::mat4 matrix)
 {
 	std::cout << "|" << matrix[0].x << " " << matrix[1].x << " " << matrix[2].x << " " << matrix[3].x << "|\n";
 	std::cout << "|" << matrix[0].y << " " << matrix[1].y << " " << matrix[2].y << " " << matrix[3].y << "|\n";
 	std::cout << "|" << matrix[0].z << " " << matrix[1].z << " " << matrix[2].z << " " << matrix[3].z << "|\n";
 	std::cout << "|" << matrix[0].w << " " << matrix[1].w << " " << matrix[2].w << " " << matrix[3].w << "|\n";
+}
+
+int smallest_mag2(glm::vec3 my_vector)
+{
+	float min_val = std::abs(my_vector[0]);
+	int pos = 0;
+
+	for(int i = 1; i < 3; ++i)
+	{
+		if(std::abs(my_vector[i]) < min_val)
+		{
+			min_val = my_vector[i];
+			pos = i;
+		}
+	}
+
+	return pos;
 }
 
 void print_all_chars(const vector<char>& my_chars)
@@ -37,10 +58,16 @@ void String_Axioms::create_next_depth()
 	vector<char> next_depth;
 
 	int pos = levels.size() - 1;
-
-	for(int i = 0; i < levels[pos].size(); ++i)
+	int i = 0;
+	while(i < levels[pos].size())
 	{
 		// if it's 0-9
+		if(levels[pos][i] == '('){
+			while(levels[pos][i] != ')'){
+				next_depth.push_back(levels[pos][i++]);
+			}
+		}
+
 		if(isdigit(levels[pos][i]))
 		{
 			int digit = levels[pos][i] - '0';
@@ -55,6 +82,7 @@ void String_Axioms::create_next_depth()
 		{
 			next_depth.push_back(levels[pos][i]);
 		}
+		++i;
 	}
 
 	levels.push_back(next_depth);	
@@ -106,7 +134,7 @@ String_Axioms::String_Axioms(string axiom, const Rules& rules_start): rules(rule
 
 	glm::vec4 start_pos1 = glm::vec4(30.0f, 0.0f, 0.0f, 1.0f);
 
-	glm::vec4 start_pos2 = glm::vec4(0.0f, 0.0f, 30.0f, 1.0f);
+	glm::vec4 start_pos2 = glm::vec4(0.0f, 0.0f, 60.0f, 1.0f);
 
 	glm::vec4 start_pos3 = glm::vec4(-30.0f, 0.0f, 0.0f, 1.0f);
 
@@ -133,10 +161,7 @@ void String_Axioms::generateCylinderLines(glm::vec4 start_pos, glm::vec4 end_pos
 {
 	//Axis = glm::rotate(Axis, (float) (M_PI/3), glm::vec3(0.0f, 0.0f, 1.0f));
 
-	//float radius = 0.1f;
 	float angle;
-	//float length = glm::length(end_pos - start_pos);
-	//std::cout << "length: " << length << "\n";
 
 	// Translation vector the start joint
 	glm::mat4 T1(1.0f);
@@ -145,12 +170,35 @@ void String_Axioms::generateCylinderLines(glm::vec4 start_pos, glm::vec4 end_pos
 	glm::mat4 T2(1.0f);
 	T2[3] = end_pos;
 
-	glm::mat4 R = glm::inverse(Axis);
+	// Generating the axis
+
+	glm::vec4 bone_vector = end_pos - start_pos;
+
+	glm::vec3 t = glm::normalize(glm::vec3(bone_vector.x, bone_vector.y, bone_vector.z));
+
+		// n-axis
+	glm::vec3 v(0.0f, 0.0f, 0.0f);
+	int axis = smallest_mag2(t);
+	v[axis] = 1.0f;
+	glm::vec3 n = glm::normalize(glm::cross(t, v));
+
+		// b-axis
+	glm::vec3 b = glm::normalize(glm::cross(t, n));
+
+	// Generate axis matrix
+	glm::mat4 Axis2 = glm::mat4(1.0f);
+
+	Axis2[0] = glm::vec4(n.x, n.y, n.z, 0.0f);
+	Axis2[1] = glm::vec4(t.x, t.y, t.z, 0.0f);
+	Axis2[2] = glm::vec4(b.x, b.y, b.z, 0.0f);
+
+	glm::mat4 R = Axis2;
+
+	// Recursion
+	bool start = true;
 
 	glm::vec4 prev_start_joint;
 	glm::vec4 prev_end_joint;
-
-	bool start = true;
 
 	for(angle = 0.0f; angle < (2.0f*M_PI); angle += 2.0f*M_PI/TREE_LINE_COUNT)
 	{
@@ -177,55 +225,74 @@ void String_Axioms::generateCylinderLines(glm::vec4 start_pos, glm::vec4 end_pos
 	}
 }
 
-void String_Axioms::recur_tree(int depth, int& pos, glm::vec4 start_pos, glm::mat4 Axis, float radius, float move)
+void String_Axioms::recur_tree(int depth, int& idx, glm::vec4 start_pos, glm::mat4 Axis, float radius, float move)
 {
 	glm::vec4 end_pos = start_pos;
+	glm::mat4 start_axis = Axis;
 
-	print_vec2(start_pos, "start pos");
-	print_matrix2(Axis);
-	std::cout << "AFTER\n\n";
-
-	while(pos < levels[depth].size())
+	// print_vec2(start_pos, "start pos");
+	// print_matrix2(Axis);
+	// std::cout << "AFTER\n\n";
+	while(idx < levels[depth].size())
 	{
-	
-		switch(levels[depth][pos++])
+		float val;
+		int temp_idx = idx;
+		bool parameterized = false;
+		if(idx < levels[depth].size()-1 &&
+		   levels[depth][idx+1] == '(')
+		{
+			parameterized = true;
+			// [TODO] Error check, no end parentheses
+			while(levels[depth][++idx] != ')');
+			std::string num (levels[depth].begin() + temp_idx+2, levels[depth].begin() + idx);
+			val = atof(num.c_str());
+			cout << "string num: " << num << "\n";
+			cout << "val: " << val << "\n";
+		} 
+		
+		++idx;
+		switch(levels[depth][temp_idx])
 		{
 		    case 'F': 
 		    {
 		    	// 		   Y-Axis
-		    	end_pos += Axis[1] * move;
+		    	end_pos += parameterized ? Axis[1] * val : Axis[1] * move;
          		break;
          	}
          	case '+': 
 		    {	//										   Z-Axis
-		    	Axis = glm::rotate(Axis, (float) (M_PI/6), glm::vec3(Axis[2].x, Axis[2].y, Axis[2].z));
-		    	//Axis = glm::rotate(Axis, (float) (M_PI/6), glm::vec3(0.0f, 0.0f, 1.0f));
+		    	float angle = parameterized ? deg_to_rad(val) : (float) (M_PI/6);
+		    	Axis = glm::rotate(Axis, angle, glm::vec3(Axis[2].x, Axis[2].y, Axis[2].z));
+		    	//Axis = glm::rotate(Axis, angle, glm::vec3(0.0f, 0.0f, 1.0f));
          		break;
          	}
          	case '-': 
 		    {
 		    	//										    Z-Axis
-		    	Axis = glm::rotate(Axis, (float) (-M_PI/6), glm::vec3(Axis[2].x, Axis[2].y, Axis[2].z));
-		    	std::cout << "matrix goes left?\n";
-		    	print_matrix2(Axis);
-		    	//Axis = glm::rotate(Axis, (float) (-M_PI/6), glm::vec3(Axis[2].x, Axis[2].y, Axis[2].z));
+		    	float angle = parameterized ? deg_to_rad(-val) : (float) (-M_PI/6);
+		    	Axis = glm::rotate(Axis, angle, glm::vec3(Axis[2].x, Axis[2].y, Axis[2].z));
+		    	//std::cout << "matrix goes left?\n";
+		    	//print_matrix2(Axis);
+		    	//Axis = glm::rotate(Axis, angle, glm::vec3(Axis[2].x, Axis[2].y, Axis[2].z));
          		break;
          	}
          	case '*': 
 		    {
 		    	//										   X-Axis
-		    	Axis = glm::rotate(Axis, (float) (M_PI/6), glm::vec3(Axis[0].x, Axis[0].y, Axis[0].z));
+		    	float angle = parameterized ? deg_to_rad(val) : (float) (M_PI/6);
+		    	Axis = glm::rotate(Axis, angle, glm::vec3(Axis[0].x, Axis[0].y, Axis[0].z));
          		break;
          	}
          	case '/': 
 		    {
 		    	//										    X-Axis
-		    	Axis = glm::rotate(Axis, (float) (-M_PI/6), glm::vec3(Axis[0].x, Axis[0].y, Axis[0].z));
+		    	float angle = parameterized ? deg_to_rad(-val) : (float) (-M_PI/6);
+		    	Axis = glm::rotate(Axis, angle, glm::vec3(Axis[0].x, Axis[0].y, Axis[0].z));
          		break;
          	}
          	case '[': 
 		    {
-		    	recur_tree(depth, pos, end_pos, Axis, radius, move);
+		    	recur_tree(depth, idx, end_pos, Axis, radius, move);
          		break;
          	}
          	case ']': 
@@ -245,9 +312,9 @@ void String_Axioms::recur_tree(int depth, int& pos, glm::vec4 start_pos, glm::ma
          	case '9':
 		    {
 		    	// 		   Y-Axis
-		    	print_vec2(start_pos, "\tstart");
-		    	print_vec2(end_pos, "\tend");
-		    	print_matrix2(Axis);
+		    	// print_vec2(start_pos, "\tstart");
+		    	// print_vec2(end_pos, "\tend");
+		    	// print_matrix2(Axis);
 		    	generateCylinderLines(start_pos, end_pos, Axis, radius);
          		break;
          	}
@@ -261,9 +328,16 @@ void String_Axioms::recur_tree(int depth, int& pos, glm::vec4 start_pos, glm::ma
 
 Rules::Rules(): rules_container()
 {
-	rules_container.push_back("F[-F1]F[+F2]F0");
-	rules_container.push_back("F[-F1]F[+FT]F1");
-	rules_container.push_back("F[-FT]F[+F2]F2");
+	//rules_container.push_back("F(1.5)0");
+	/* Non-parameterized */
+	// rules_container.push_back("F[-F1]F[/F2]F[*F1]F[+F2]F0");
+	// rules_container.push_back("F[-F1]F[/FT]F[*F1]F[+FT]F1");
+	// rules_container.push_back("F[-FT]F[/F2]F[*FT]F[+F2]F2");
+
+	/* Parameterized */
+	rules_container.push_back("F(1)[-(30)F1]F[/(30)F2]F[*(15)F1]F[+(30)F2]F0");
+	rules_container.push_back("F(2)[-(15)F1]F[/(30)FT]F[*(30)F1]F[+(15)FT]F1");
+	rules_container.push_back("F(4)[-(30)FT]F[/(15)F2]F[*(30)FT]F[+(30)F2]F2");
 }
 
 const vector<string>& Rules::getRules() const

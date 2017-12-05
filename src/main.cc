@@ -139,7 +139,7 @@ int main(int argc, char* argv[])
 
 	Rules rule;
 	String_Axioms string_axioms("0", rule);
-	std::cout << "Nelson\n";
+	//std::cout << "Nelson\n";
 
 	/*
 	 * GUI object needs the mesh object for bone manipulation.

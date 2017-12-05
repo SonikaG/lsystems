@@ -9,6 +9,8 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtx/io.hpp>
+#include <glm/gtx/transform.hpp>
+#include <glm/glm.hpp>
 
 #define TREE_LINE_COUNT 24.0f
 
