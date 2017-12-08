@@ -14,10 +14,10 @@
 
 |<span style="font-size:0.6em">Symbol</span>|<span style="font-size:0.6em">Description</span>|
 |------|-----------|
-|F|~~Pay respects.~~ Move upwards.|
-|+ / -|Forward / backward in Z-axis.|
-|\* / /|Forward / backward in X-axis.|
-|[ / ]| Push / pop.|
-|0-9|Variables.|
-|T|Terminal.|
-|(d)|Parameterize preceding symbol with *d*|
+|<span style="font-size:0.6em">F</span>|<span style="font-size:0.6em">~~Pay respects.~~ Move upwards.</span>|
+|<span style="font-size:0.6em">+ / -</span>|<span style="font-size:0.6em">Forward / backward in Z-axis.</span>|
+|<span style="font-size:0.6em">\* / /</span>|<span style="font-size:0.6em">Forward / backward in X-axis.</span>|
+|<span style="font-size:0.6em">[ / ]</span>|<span style="font-size:0.6em">Push / pop.</span>|
+|<span style="font-size:0.6em">0-9</span>|<span style="font-size:0.6em">Variables.</span>|
+|<span style="font-size:0.6em">T</span>|<span style="font-size:0.6em">Terminal.</span>|
+|<span style="font-size:0.6em">(d)</span>|<span style="font-size:0.6em">Parameterize preceding symbol with *d*</span>|
