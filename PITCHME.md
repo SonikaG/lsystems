@@ -26,15 +26,15 @@
 |<span style="font-size:0.6em">(d)</span>|<span style="font-size:0.6em">Parameterize preceding symbol with *d*</span>|
 
 ---
-# Translating axioms into code
+# From axioms to code
 
 * Start with Project 5
 
-* Create strings for creating trees with more depth
+* Create a string for each depth of the tree
 
 * Rotate trees in 3D
  
-* Read turtle geometry commands and translate into code
+* Read turtle geometry commands and translate into movements
 
 * Generate tree branch "cylinders" onto the screen
 
@@ -42,13 +42,13 @@
 
 # Results
 
-Live demo
-
 ```
 "F(.25)[-(30)F1]F[/(30)F2]F[*(15)F1]F[+(30)F2]F0"
 "F(.5)[-(15)F1]F[/(30)FT]F[*(30)F1]F[+(15)FT]F1"
 "F(1.0)[-(30)FT]F[/(15)F2]F[*(30)FT]F[+(30)F2]F2"
 ```
+
+Live demo
 
 ---
 
@@ -57,7 +57,7 @@ Live demo
 * Reading starting axioms and rules from files
 
 * Parametrize actual axioms instead of turtle geometry commands:
-L0[x, θ] = F[x] -[θ] F[x] +[θ] F[1]
+`L0[x, θ] = F[x] -[θ] F[x] +[θ] F[1]`
 
 * Reducing branch size as depth increases
 
