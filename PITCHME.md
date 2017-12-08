@@ -11,9 +11,9 @@
 |<span style="font-size:0.6em">Symbol</span>|<span style="font-size:0.6em">Description</span>|
 |------|-----------|
 |<span style="font-size:0.6em">F</span>|<span style="font-size:0.6em">~~Pay respects.~~ Move upwards.</span>|
-|<span style="font-size:0.6em">+ / -</span>|<span style="font-size:0.6em">Forward / backward in Z-axis.</span>|
-|<span style="font-size:0.6em">\* / /</span>|<span style="font-size:0.6em">Forward / backward in X-axis.</span>|
-|<span style="font-size:0.6em">[ / ]</span>|<span style="font-size:0.6em">Push / pop.</span>|
+|<span style="font-size:0.6em">+ OR -</span>|<span style="font-size:0.6em">Forward / backward in Z-axis.</span>|
+|<span style="font-size:0.6em">\* OR /</span>|<span style="font-size:0.6em">Forward / backward in X-axis.</span>|
+|<span style="font-size:0.6em">[ OR ]</span>|<span style="font-size:0.6em">Push / pop.</span>|
 
 +++
 
@@ -30,17 +30,25 @@
 
 * Start with Project 5
 
-* Creating strings for creating trees with more depth
+* Create strings for creating trees with more depth
 
-* Rotating trees in 3D
+* Rotate trees in 3D
  
-* Reading turtle geometry commands and translate into code
+* Read turtle geometry commands and translate into code
 
-* Generating tree branch "cylinders" onto the screen
+* Generate tree branch "cylinders" onto the screen
 
 ---
 
-# Results (Live demo)
+# Results
+
+Live demo
+
+```
+"F(.25)[-(30)F1]F[/(30)F2]F[*(15)F1]F[+(30)F2]F0"
+"F(.5)[-(15)F1]F[/(30)FT]F[*(30)F1]F[+(15)FT]F1"
+"F(1.0)[-(30)FT]F[/(15)F2]F[*(30)FT]F[+(30)F2]F2"
+```
 
 ---
 
@@ -50,3 +58,7 @@
 
 * Parametrize actual axioms instead of turtle geometry commands:
 L0[x, θ] = F[x] -[θ] F[x] +[θ] F[1]
+
+* Reducing branch size as depth increases
+
+* Prettier trees
