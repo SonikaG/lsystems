@@ -41,3 +41,12 @@
 ---
 
 # Results (Live demo)
+
+---
+
+# Future plans
+
+* Reading starting axioms and rules from files
+
+* Parametrize actual axioms instead of turtle geometry commands:
+L0[x, θ] = F[x] -[θ] F[x] +[θ] F[1]
