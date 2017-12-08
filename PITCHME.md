@@ -46,6 +46,4 @@
 
 ---
 
-# Results
-
-TODO: Screenshots or live demo
+# Results (Live demo)
