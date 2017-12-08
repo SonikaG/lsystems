@@ -6,8 +6,11 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include "bone_geometry.h"
+#include "string_axioms.h"
 
 class Mesh;
+class String_Axioms;
+class Rules;
 
 /*
  * Hint: call glUniformMatrix4fv on thest pointers
@@ -20,7 +23,7 @@ class GUI {
 public:
 	GUI(GLFWwindow*);
 	~GUI();
-	void assignMesh(Mesh*);
+	void assignTree(std::vector<String_Axioms*>*, Rules*);
 
 	void keyCallback(int key, int scancode, int action, int mods);
 	void mousePosCallback(double mouse_x, double mouse_y);
@@ -42,8 +45,9 @@ public:
 	//bool setCurrentBone(int i);
 
 	bool isTransparent() const { return transparent_; }
-
+	bool treeDirty = false;
 	// New methods
+	glm::vec4 intersectFloor(const Ray& ray);
 
 	// Return the full MVP matrix
 	const glm::mat4 MVP() const;
@@ -54,10 +58,13 @@ public:
 private:
 	GLFWwindow* window_;
 	Mesh* mesh_;
+	std::vector<String_Axioms*>* trees_;
+	Rules* rules_;
 
 	int window_width_, window_height_;
 
 	bool drag_state_ = false;
+	bool mouse_release_state_ = false;
 	bool fps_mode_ = false;
 	bool pose_changed_ = true;
 	bool transparent_ = false;

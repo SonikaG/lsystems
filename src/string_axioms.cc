@@ -113,48 +113,50 @@ void String_Axioms::add_axiom0(string axiom)
 	levels.push_back(base_depth);
 }
 
-String_Axioms::String_Axioms(string axiom, const Rules& rules_start): rules(rules_start), levels()
+String_Axioms::String_Axioms(string axiom, const Rules& rules_start, glm::vec4 initial_pos_): rules(rules_start), levels(), initial_pos(initial_pos_)
 {
 
 	add_axiom0(axiom);
 
-	print_all_chars(levels[0]);
+	//print_all_chars(levels[0]);
 
-	create_depth_n(4);
+	create_depth_n(6);
 
-	print_all_chars(levels[1]);
+	//print_all_chars(levels[1]);
 
-	print_all_chars(levels[2]);
+	//print_all_chars(levels[2]);
 
-	print_all_chars(levels[3]);
+	//print_all_chars(levels[3]);
 
-	print_all_chars(levels[4]);
+	//print_all_chars(levels[4]);
 
-	glm::vec4 start_pos = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	// glm::vec4 start_pos = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
-	glm::vec4 start_pos1 = glm::vec4(30.0f, 0.0f, 0.0f, 1.0f);
+	// glm::vec4 start_pos1 = glm::vec4(30.0f, 0.0f, 0.0f, 1.0f);
 
-	glm::vec4 start_pos2 = glm::vec4(0.0f, 0.0f, 60.0f, 1.0f);
+	// glm::vec4 start_pos2 = glm::vec4(0.0f, 0.0f, 60.0f, 1.0f);
 
-	glm::vec4 start_pos3 = glm::vec4(-30.0f, 0.0f, 0.0f, 1.0f);
+	// glm::vec4 start_pos3 = glm::vec4(-30.0f, 0.0f, 0.0f, 1.0f);
 
 	//generateCylinderLines(start_pos, end_pos, glm::mat4(1.0f), 2.0f);
 
 	int pos = 0;
 
-	recur_tree(1, pos, start_pos1, glm::mat4(1.0f), 0.5f, 3.0f);
+	//recur_tree(1, pos, start_pos1, glm::mat4(1.0f), 0.5f, 3.0f);
 
-	pos = 0;
+	//pos = 0;
 
-	recur_tree(2, pos, start_pos2, glm::mat4(1.0f), 0.5f, 3.0f);
+	//recur_tree(2, pos, start_pos2, glm::mat4(1.0f), 0.5f, 3.0f);
 
-	pos = 0;
+	//pos = 0;
 
-	recur_tree(3, pos, start_pos3, glm::mat4(1.0f), 0.5f, 3.0f);
+	//recur_tree(3, pos, start_pos3, glm::mat4(1.0f), 0.5f, 3.0f);
 	
-	pos = 0;
+	//pos = 0;
 
-	recur_tree(4, pos, start_pos, glm::mat4(1.0f), 0.5f, 3.0f);
+	recur_tree(4, pos, initial_pos, glm::mat4(1.0f), 0.125f, 0.75f);
+
+	//initial_pos = start_pos;
 }
 
 void String_Axioms::generateCylinderLines(glm::vec4 start_pos, glm::vec4 end_pos, glm::mat4 Axis, float radius)
@@ -225,6 +227,16 @@ void String_Axioms::generateCylinderLines(glm::vec4 start_pos, glm::vec4 end_pos
 	}
 }
 
+void String_Axioms::reset_tree()
+{
+	tree_vertices.clear();
+}
+
+glm::vec3 String_Axioms::getCenter()
+{
+	return glm::vec3(initial_pos.x, 0.0f, initial_pos.z);
+}
+
 void String_Axioms::recur_tree(int depth, int& idx, glm::vec4 start_pos, glm::mat4 Axis, float radius, float move)
 {
 	glm::vec4 end_pos = start_pos;
@@ -246,8 +258,8 @@ void String_Axioms::recur_tree(int depth, int& idx, glm::vec4 start_pos, glm::ma
 			while(levels[depth][++idx] != ')');
 			std::string num (levels[depth].begin() + temp_idx+2, levels[depth].begin() + idx);
 			val = atof(num.c_str());
-			cout << "string num: " << num << "\n";
-			cout << "val: " << val << "\n";
+			//cout << "string num: " << num << "\n";
+			//cout << "val: " << val << "\n";
 		} 
 		
 		++idx;
@@ -335,9 +347,9 @@ Rules::Rules(): rules_container()
 	// rules_container.push_back("F[-FT]F[/F2]F[*FT]F[+F2]F2");
 
 	/* Parameterized */
-	rules_container.push_back("F(1)[-(30)F1]F[/(30)F2]F[*(15)F1]F[+(30)F2]F0");
-	rules_container.push_back("F(2)[-(15)F1]F[/(30)FT]F[*(30)F1]F[+(15)FT]F1");
-	rules_container.push_back("F(4)[-(30)FT]F[/(15)F2]F[*(30)FT]F[+(30)F2]F2");
+	rules_container.push_back("F(.25)[-(30)F1]F[/(30)F2]F[*(15)F1]F[+(30)F2]F0");
+	rules_container.push_back("F(.5)[-(15)F1]F[/(30)FT]F[*(30)F1]F[+(15)FT]F1");
+	rules_container.push_back("F(1.0)[-(30)FT]F[/(15)F2]F[*(30)FT]F[+(30)F2]F2");
 }
 
 const vector<string>& Rules::getRules() const

@@ -138,13 +138,21 @@ int main(int argc, char* argv[])
 	// mesh_center /= mesh.vertices.size();
 
 	Rules rule;
-	String_Axioms string_axioms("0", rule);
+	String_Axioms string_axioms("0", rule, glm::vec4(0.0f, kFloorY, 0.0f, 1.0f));
+
+	std::vector<glm::vec4> tree_vertices;
+	vector<String_Axioms*> trees;
+	
+	trees.push_back(&string_axioms);
+
 	//std::cout << "Nelson\n";
 
 	/*
 	 * GUI object needs the mesh object for bone manipulation.
 	 */
-	//gui.assignMesh(&mesh);
+	gui.assignTree(&trees, &rule);
+
+	tree_vertices = trees[0]->tree_vertices;
 
 	glm::vec4 light_position = glm::vec4(0.0f, 100.0f, 0.0f, 1.0f);
 	MatrixPointers mats; // Define MatrixPoFinters here for lambda to capture
@@ -301,7 +309,7 @@ int main(int argc, char* argv[])
 	// 		);
 
 	RenderDataInput cylinder_pass_input;
-	cylinder_pass_input.assign(0, "vertex_position", string_axioms.tree_vertices.data(), string_axioms.tree_vertices.size(), 4, GL_FLOAT);
+	cylinder_pass_input.assign(0, "vertex_position", tree_vertices.data(), tree_vertices.size(), 4, GL_FLOAT);
 	RenderPass cylinder_pass(-1,
 			cylinder_pass_input,
 	 		{ bone_vertex_shader, bone_geometry_shader, cylinder_fragment_shader},
@@ -389,12 +397,23 @@ int main(int argc, char* argv[])
 
 		if(draw_cylinder)
 		{
+			if(gui.treeDirty){
+				tree_vertices.clear();
+				for(int i = 0; i < trees.size(); ++i)
+				{
+					for(int j = 0; j < trees[i]->tree_vertices.size(); j++){
+						tree_vertices.push_back(trees[i]->tree_vertices[j]);
+					}
+				}
+			}
+			gui.treeDirty = false;
+
 		 	cylinder_pass.updateVBO(0,
-		 					  string_axioms.tree_vertices.data(),
-		 					  string_axioms.tree_vertices.size());
+		 					  tree_vertices.data(),
+		 					  tree_vertices.size());
 		 	cylinder_pass.setup();
 
-		 	CHECK_GL_ERROR(glDrawArrays(GL_LINES, 0, string_axioms.tree_vertices.size() * 2));
+		 	CHECK_GL_ERROR(glDrawArrays(GL_LINES, 0, tree_vertices.size() * 2));
 
 		// 	normal_pass.updateVBO(0,
 		// 					  mesh.skeleton.getNormalVertices().data(),

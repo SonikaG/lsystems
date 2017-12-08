@@ -33,7 +33,6 @@ private:
 	vector<vector<char>> levels;
 	const Rules& rules;
 	
-	glm::vec4 initial_pos;
 	glm::mat4 axis_system;
 	float initial_radius; 
 	float branch_length;
@@ -42,11 +41,16 @@ private:
 	void create_depth_n(int n);
 	void create_next_depth();
 public:
+	glm::vec4 initial_pos;
+
 	std::vector<glm::vec4> tree_vertices;
-	String_Axioms(string axiom, const Rules& rules);
+	String_Axioms(string axiom, const Rules& rules_start, glm::vec4 initial_pos_);
 
 	void generateCylinderLines(glm::vec4 start_pos, glm::vec4 end_pos, glm::mat4 Axis, float radius);
 	void recur_tree(int depth, int& pos, glm::vec4 start_pos, glm::mat4 Axis, float radius, float move);
+	void reset_tree();
+	glm::vec3 getCenter();
+
 };
 
 

@@ -8,6 +8,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
+#include "string_axioms.h"
+
 namespace {
 	// Intersect a cylinder with radius 1/2, height 1, with base centered at
 	// (0, 0, 0) and up direction (0, 1, 0).
@@ -41,10 +43,11 @@ GUI::~GUI()
 {
 }
 
-void GUI::assignMesh(Mesh* mesh)
+void GUI::assignTree(std::vector<String_Axioms*>* trees, Rules* rules)
 {
-	mesh_ = mesh;
-	center_ = mesh_->getCenter();
+	center_ = (*trees)[0]->getCenter();
+	trees_ = trees;
+	rules_ = rules;
 }
 
 void GUI::keyCallback(int key, int scancode, int action, int mods)
@@ -61,6 +64,8 @@ void GUI::keyCallback(int key, int scancode, int action, int mods)
 	}
 
 	//if(key == GLFW_KEY_M)
+	glm::vec4 start_pos = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	int pos = 0;
 
 	if (captureWASDUPDOWN(key, action))
 		return ;
@@ -80,6 +85,54 @@ void GUI::keyCallback(int key, int scancode, int action, int mods)
 		// 	mesh_->skeleton.regenerateBinormalVertices(current_bone_);
 		// 	pose_changed_ = true;
 		// }
+	} else if(key == GLFW_KEY_1 && action == GLFW_RELEASE) {
+		for(int i = 0; i < trees_->size(); ++i)
+		{
+			(*trees_)[i]->reset_tree();
+			(*trees_)[i]->recur_tree(1, pos, (*trees_)[i]->initial_pos, glm::mat4(1.0f), 0.125f, 0.75f);
+			treeDirty = true;
+			pos = 0;
+		}
+	} else if(key == GLFW_KEY_2 && action == GLFW_RELEASE) {
+		for(int i = 0; i < trees_->size(); ++i)
+		{
+			(*trees_)[i]->reset_tree();
+			(*trees_)[i]->recur_tree(2, pos, (*trees_)[i]->initial_pos, glm::mat4(1.0f), 0.125f, 0.75f);
+			treeDirty = true;
+			pos = 0;
+		}
+	} else if(key == GLFW_KEY_3 && action == GLFW_RELEASE) {
+		for(int i = 0; i < trees_->size(); ++i)
+		{
+			(*trees_)[i]->reset_tree();
+			(*trees_)[i]->recur_tree(3, pos, (*trees_)[i]->initial_pos, glm::mat4(1.0f), 0.125f, 0.75f);
+			treeDirty = true;
+			pos = 0;
+		}
+	} else if(key == GLFW_KEY_4 && action == GLFW_RELEASE) {
+		for(int i = 0; i < trees_->size(); ++i)
+		{
+			(*trees_)[i]->reset_tree();
+			(*trees_)[i]->recur_tree(4, pos, (*trees_)[i]->initial_pos, glm::mat4(1.0f), 0.125f, 0.75f);
+			treeDirty = true;
+			pos = 0;
+		}
+	} else if(key == GLFW_KEY_5 && action == GLFW_RELEASE) {
+		for(int i = 0; i < trees_->size(); ++i)
+		{
+			(*trees_)[i]->reset_tree();
+			(*trees_)[i]->recur_tree(5, pos, (*trees_)[i]->initial_pos, glm::mat4(1.0f), 0.125f, 0.75f);
+			treeDirty = true;
+			pos = 0;
+		}
+	} else if(key == GLFW_KEY_6 && action == GLFW_RELEASE) {
+		for(int i = 0; i < trees_->size(); ++i)
+		{
+			(*trees_)[i]->reset_tree();
+			(*trees_)[i]->recur_tree(6, pos, (*trees_)[i]->initial_pos, glm::mat4(1.0f), 0.125f, 0.75f);
+			treeDirty = true;
+			pos = 0;
+		}
 	} else if (key == GLFW_KEY_C && action != GLFW_RELEASE) {
 		fps_mode_ = !fps_mode_;
 	} else if (key == GLFW_KEY_LEFT_BRACKET && action == GLFW_RELEASE) {
@@ -121,7 +174,13 @@ void GUI::mousePosCallback(double mouse_x, double mouse_y)
 
 	setRay(mouse_ray, mouse_x, mouse_y);
 
-	if (drag_camera) {
+	if(current_button_ == GLFW_MOUSE_BUTTON_LEFT && mouse_release_state_)
+	{
+		glm::vec4 pos = intersectFloor(mouse_ray);
+		(*trees_).push_back(new String_Axioms("0", *rules_, pos));
+		treeDirty = true;
+		mouse_release_state_ = false;
+	}if (drag_camera) {
 		glm::vec3 axis = glm::normalize(
 				orientation_ *
 				glm::vec3(mouse_direction.y, -mouse_direction.x, 0.0f)
@@ -170,6 +229,7 @@ void GUI::mousePosCallback(double mouse_x, double mouse_y)
 void GUI::mouseButtonCallback(int button, int action, int mods)
 {
 	drag_state_ = (action == GLFW_PRESS);
+	mouse_release_state_ = (action == GLFW_RELEASE);
 	current_button_ = button;
 }
 
@@ -299,4 +359,11 @@ void GUI::setRay(Ray& ray, double mouse_x, double mouse_y)
 void GUI::highlightBones(const Ray& ray, Bone*& bone)
 {
 	mesh_->skeleton.highlightBones(ray, bone);
+}
+
+glm::vec4 GUI::intersectFloor(const Ray& ray)
+{
+	float t = (kFloorY - ray.p.y) / (ray.v.y);
+	glm::vec3 pos = ray.p + (t * ray.v);
+	return glm::vec4(pos.x, pos.y, pos.z, 1.0f);
 }
