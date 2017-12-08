@@ -26,12 +26,23 @@
 |<span style="font-size:0.6em">(d)</span>|<span style="font-size:0.6em">Parameterize preceding symbol with *d*</span>|
 
 ---
+# Translating axioms into code
+
+
+
+--- 
 
 # How
 
 * Start with Project 5
 
-* TODO
+* Creating strings for creating trees with more depth
+
+* Rotating trees in 3D
+ 
+* Reading turtle geometry commands and translate into code
+
+* Generating tree branch "cylinders" onto the screen
 
 ---
 
