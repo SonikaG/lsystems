@@ -8,11 +8,11 @@
 
 ---
 
-@title[Intro to L-Systems]
+@title[Alphabet]
 
 # Alphabet
 
-|Symbol|Description|
+|<span style="font-size:0.6em">Symbol</span>|<span style="font-size:0.6em">Description</span>|
 |------|-----------|
 |F|~~Pay respects.~~ Move upwards.|
 |+ / -|Forward / backward in Z-axis.|
@@ -20,3 +20,4 @@
 |[ / ]| Push / pop.|
 |0-9|Variables.|
 |T|Terminal.|
+|(d)|Parameterize preceding symbol with *d*|
