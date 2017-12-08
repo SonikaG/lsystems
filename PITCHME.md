@@ -1,5 +1,3 @@
-@title[Introduction]
-
 # L-Systems
 
 
@@ -7,8 +5,6 @@
 |:---------------:|:----------------------:|:---------------:|
 
 ---
-
-@title[Alphabet]
 
 # Alphabet (1 of 2)
 
@@ -28,3 +24,17 @@
 |<span style="font-size:0.6em">0-9</span>|<span style="font-size:0.6em">Variables.</span>|
 |<span style="font-size:0.6em">T</span>|<span style="font-size:0.6em">Terminal.</span>|
 |<span style="font-size:0.6em">(d)</span>|<span style="font-size:0.6em">Parameterize preceding symbol with *d*</span>|
+
+---
+
+# How
+
+* Start with Project 5
+
+* TODO
+
+---
+
+# Results
+
+TODO: Screenshots or live demo
