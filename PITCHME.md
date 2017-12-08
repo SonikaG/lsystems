@@ -28,12 +28,6 @@
 ---
 # Translating axioms into code
 
-
-
---- 
-
-# How
-
 * Start with Project 5
 
 * Creating strings for creating trees with more depth
