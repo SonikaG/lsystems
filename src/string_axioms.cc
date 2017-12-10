@@ -1,6 +1,7 @@
 #include "string_axioms.h"
 
 #include <ctype.h>
+#include <fstream>
 
 using namespace std;
 
@@ -338,18 +339,14 @@ void String_Axioms::recur_tree(int depth, int& idx, glm::vec4 start_pos, glm::ma
 	}
 }
 
-Rules::Rules(): rules_container()
+Rules::Rules(const std::string rules_filename): rules_container()
 {
-	//rules_container.push_back("F(1.5)0");
-	/* Non-parameterized */
-	// rules_container.push_back("F[-F1]F[/F2]F[*F1]F[+F2]F0");
-	// rules_container.push_back("F[-F1]F[/FT]F[*F1]F[+FT]F1");
-	// rules_container.push_back("F[-FT]F[/F2]F[*FT]F[+F2]F2");
-
-	/* Parameterized */
-	rules_container.push_back("F(.25)[-(30)F1]F[/(30)F2]F[*(15)F1]F[+(30)F2]F0");
-	rules_container.push_back("F(.5)[-(15)F1]F[/(30)FT]F[*(30)F1]F[+(15)FT]F1");
-	rules_container.push_back("F(1.0)[-(30)FT]F[/(15)F2]F[*(30)FT]F[+(30)F2]F2");
+	std::ifstream infile(rules_filename);
+	std::string line;
+	while (std::getline(infile, line))
+	{
+		rules_container.push_back(line);
+	}
 }
 
 const vector<string>& Rules::getRules() const

@@ -107,8 +107,8 @@ GLFWwindow* init_glefw()
 int main(int argc, char* argv[])
 {
 	if (argc < 2) {
-		std::cerr << "Input model file is missing" << std::endl;
-		std::cerr << "Usage: " << argv[0] << " <PMD file>" << std::endl;
+		std::cerr << "Input rules file is missing" << std::endl;
+		std::cerr << "Usage: " << argv[0] << " <Rules file>" << std::endl;
 		return -1;
 	}
 	GLFWwindow *window = init_glefw();
@@ -137,7 +137,7 @@ int main(int argc, char* argv[])
 	// }
 	// mesh_center /= mesh.vertices.size();
 
-	Rules rule;
+	Rules rule(argv[1]);
 	String_Axioms string_axioms("0", rule, glm::vec4(0.0f, kFloorY, 0.0f, 1.0f));
 
 	std::vector<glm::vec4> tree_vertices;

@@ -22,7 +22,7 @@ private:
 	vector<string> rules_container;
 
 public:
-	Rules();
+	Rules(const std::string rules_filename);
 	const vector<string>& getRules() const;
 	const string& getRule(int index) const; 
 };
