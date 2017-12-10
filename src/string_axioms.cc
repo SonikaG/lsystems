@@ -206,7 +206,7 @@ void String_Axioms::generateCylinderLines(glm::vec4 start_pos, glm::vec4 end_pos
 	for(angle = 0.0f; angle < (2.0f*M_PI); angle += 2.0f*M_PI/TREE_LINE_COUNT)
 	{
 		glm::vec4 start_joint = T1 * R * glm::vec4(radius*glm::cos(angle), 0.0f, radius*glm::sin(angle), 1.0f);
-		glm::vec4 end_joint = T2 * R * glm::vec4(radius*glm::cos(angle), 0.0f, radius*glm::sin(angle), 1.0f);
+		glm::vec4 end_joint = T2 * R * glm::vec4(0.25f*radius*glm::cos(angle), 0.0f, 0.25f*radius*glm::sin(angle), 1.0f);
 
 		tree_vertices.push_back(start_joint);
 		tree_vertices.push_back(end_joint);
