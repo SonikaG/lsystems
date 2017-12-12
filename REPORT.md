@@ -52,13 +52,23 @@ Pressing keys 1-6 will change the level of recursive depth, rendering more compl
 
 ## Bush, depth 2
 
+![Bush Depth 2](screenshots/bush_2.png)
+
 ## Bush, depth 4
+
+![Bush Depth 4](screenshots/bush_4.png)
 
 ## Bush, depth 6 (zoomed out)
 
+![Bush Depth 6](screenshots/bush_6.png)
+
 ## Oak, depth 5 (zoomed out)
 
+![Oak Depth 5](screenshots/oak.png)
+
 ## Pine, depth 3 (the best depth for pine)
+
+![Pine Depth 3](screenshots/pine.png)
 
 # References
 
