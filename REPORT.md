@@ -46,7 +46,19 @@ Pressing keys 1-6 will change the level of recursive depth, rendering more compl
 
 # Artifacts
 
-SCREEN SHOTS GO HERE (Taylor)
+## Bush, non-parameterized, depth 4
+
+![Bush](screenshots/bush_nonparameterized.png)
+
+## Bush, depth 2
+
+## Bush, depth 4
+
+## Bush, depth 6 (zoomed out)
+
+## Oak, depth 5 (zoomed out)
+
+## Pine, depth 3 (the best depth for pine)
 
 # References
 
