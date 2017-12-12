@@ -11,3 +11,7 @@
 ## Rules files
 
 Each line of the rules file is considered a single rule and it is indexed by 0-based line number. The rule at line 0 is considered the starting rule.
+
+# Report
+
+Please view [REPORT.md](REPORT.md)
