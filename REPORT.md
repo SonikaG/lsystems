@@ -1,6 +1,6 @@
 # Project background
 
-## L-System introduction (Sonika, I can do this part)
+## L-Systems introduction (Sonika, I can do this part)
 
 
 ## Alphabet (Sonika, I can do this part (note from Taylor: you can literally copy the tables from [PITCHME.md](PITCHME.md)))
@@ -50,10 +50,8 @@ SCREEN SHOTS GO HERE (Taylor)
 
 # References
 
-TODO: Clean up with markdown (Taylor)
+["Graphical Applications of L-Systems" paper](http://algorithmicbotany.org/papers/graphical.gi86.pdf)
 
-http://algorithmicbotany.org/papers/graphical.gi86.pdf
+[Procedural Spline-Skeletons for Organic Structures and Adaptive Architecture slides](https://www.google.com/amp/slideplayer.com/amp/9955345/)
 
-https://www.google.com/amp/slideplayer.com/amp/9955345/
-
-L-System slides from class
+[L-System slides from class](https://www.cs.utexas.edu/~theshark/courses/cs354/lectures/cs354-22.pdf)
