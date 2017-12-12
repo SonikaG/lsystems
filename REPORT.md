@@ -1,12 +1,12 @@
-# Project Background
+# Project background
 
-## What are L-Systems (Sonika, I can do this part)
-
-
-## What was our alphabet (Sonika, I can do this part)
+## L-System introduction (Sonika, I can do this part)
 
 
-## How did we parameterize (Nelson)
+## Alphabet (Sonika, I can do this part (note from Taylor: you can literally copy the tables from [PITCHME.md](PITCHME.md)))
+
+
+## Parameterization method
 
 To parametrize trees, we interpret a word in the alphabet with a number in the function. For instance:
 
@@ -16,7 +16,7 @@ The alphabet letters for movement and axis rotation can all take in decimal valu
 
 # What We Accomplished
 
-## Reading in strings to render trees (Nelson)
+## Reading in strings to render trees
 
 Our codebase produces and stores the recurred a starting axiom after 1,2,3,4....n recursion depths. All of the strings are stored to change the depth of a tree on the screen fast. Having the raw strings for how to draw a tree at a recursion depth lets us read all our alphabet symbols consecutively.
 
@@ -26,13 +26,13 @@ Cylinders are drawn for the branch similar to bones in Project 4 by using the st
 
 ## Parser that reads the rules and axioms from file (Taylor)
 
-## Can produce parameterized trees:
+## Parameterized trees
 
 * Coniferous
 
 * Bush
 
-* Pine
+* Oak
 
 ## Tree Planting
 
@@ -40,7 +40,9 @@ We use the mouse ray projection developed in Project 4 to have a ray from the mo
 
 We obtain that value when an user clicks the floor to render a new tree with the start position being at that floor intersection.
 
-## Can increase their “depth”/complexity with mouse controls
+## Keyboard based depth / complexity
+
+Pressing keys 1-6 will change the level of recursive depth, rendering more complex trees as the depth increases.
 
 # Artifacts
 
