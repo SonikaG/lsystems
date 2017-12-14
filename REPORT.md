@@ -24,7 +24,9 @@ Those symbols are read with a recursion function that manipulates a starting pos
 
 Cylinders are drawn for the branch similar to bones in Project 4 by using the start and end position as translations and then the axis system as our rotation axis.
 
-## Parser that reads the rules and axioms from file (Taylor)
+## Parser that reads the rules file
+
+The rules are read in from the file specified by `argv[1]`. These rules are then provided to the `String_Axioms` constructor to expand the string for depths 1-6 which are then used to generate the positions as described in the section above.
 
 ## Parameterized trees
 
