@@ -9,7 +9,7 @@ We support the following alphabet:
 
 |Symbol|Description|
 |------|-----------|
-|F|~~Pay respects.~~ Move upwards.|
+|F|Move upwards.|
 |+ OR -|Forward / backward in Z-axis.|
 |\* OR /|Forward / backward in X-axis.|
 |[ OR ]|Push / pop.|
