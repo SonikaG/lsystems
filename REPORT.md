@@ -3,8 +3,19 @@
 ## L-Systems introduction (Sonika, I can do this part)
 
 
-## Alphabet (Sonika, I can do this part (note from Taylor: you can literally copy the tables from [PITCHME.md](PITCHME.md)))
+## Alphabet (Sonika, I can do this part)
 
+We support the following alphabet:
+
+|Symbol|Description|
+|------|-----------|
+|F|~~Pay respects.~~ Move upwards.|
+|+ OR -|Forward / backward in Z-axis.|
+|\* OR /|Forward / backward in X-axis.|
+|[ OR ]|Push / pop.|
+|0-9|Variables.|
+|T|Terminal.|
+|(d)|Parameterize preceding symbol with *d*|
 
 ## Parameterization method
 
