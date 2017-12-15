@@ -1,9 +1,10 @@
 # Project background
 
-## L-Systems introduction (Sonika, I can do this part)
+## L-Systems introduction 
 
+L-systems are a system of symbols that describe patterns in a plant. It was created by a botanist and meant to mimic various ways plants differentiate. To create an l-system, you essentially create a string parser. The string parser then uses a map to understand what each letter or symbol means conceptially. An examplemapping and the one we used is provided below. L-systems need axioms, variables, terminals and rules to function. An axiom is a starting string. Variables are symbols you can replace and terminals are symbols you cannot. Rules are simply what you replace variables with. The strings and the symbols used have to accomodate the various effects you wish to achieve. For us, this meant having symbols that could accomodate moving in the z-direction so that we could create 3-D trees.We also needed a symbol for parameterization. After a parser is created, the last step is to interpret the symbols graphically. 
 
-## Alphabet (Sonika, I can do this part)
+## Alphabet 
 
 We support the following alphabet:
 
@@ -17,6 +18,14 @@ We support the following alphabet:
 |T|Terminal.|
 |(d)|Parameterize preceding symbol with *d*|
 
+The alphabet was taken from the slides. We did add a few new symbols. 
+
+To read the alphabet, we needed to create our parser. We took the input string put it into a vector of chars. Then, when we need to intepret each letter to graphically render our trees, we simply iterate through this vector. 
+
+To create strings at various depths (further explanation below), we simply replace the symbol with its rule. For example if the axiom is F1+2. It would stored like this: [F, 1, +, 2] and then at depth 1 we would replace 1 and 2 with their respective rules. At depth 2, we would repeat this process again, therefore recursively increasing the length of the vector.
+
+It is these various depth vectors that we use so that we only have to do a single pass of the vector. 
+ 
 ## Parameterization method
 
 To parametrize trees, we interpret a word in the alphabet with a number in the function. For instance:
